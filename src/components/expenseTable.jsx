@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { getExpenses } from "../services/fakeExpenseService";
 import { Columns } from "../services/columns";
-import { Table } from "antd";
+import { Table, Row, Col } from "antd";
 import StatisticComponent from "./statisticComponent";
+import WrappedFormComponent from "./form";
 
 class ExpenseTable extends Component {
     state = {
@@ -27,25 +28,54 @@ class ExpenseTable extends Component {
         });
     };
 
+    handleAddData = ({ name, amount, date, category }) => {
+        // console.log(values.date.format("YYYY-MM-DD"));
+
+        const dataToadd = {
+            key: "5b21ca3eeb7f6fbccd47jkj",
+            name: name,
+            category: {
+                key: "5b21ca3eeb7f6fbccd471814",
+                name: category[0]
+            },
+            subCategory: [...category.slice(1, 3)],
+            date: date.format("YYYY-MM-DD"),
+            amount: parseFloat(amount)
+        };
+        const expenses = [dataToadd, ...this.state.expenses];
+        this.setState({
+            expenses
+        });
+    };
+
     render() {
         let { sortedInfo, filteredInfo } = this.state;
         sortedInfo = sortedInfo || {};
         filteredInfo = filteredInfo || {};
         const columns = Columns(filteredInfo, sortedInfo, this.handleDelete);
         return (
-            <div>
-                <StatisticComponent data={this.state.expenses} />
-
-                <Table
-                    className="mt-50"
-                    columns={columns}
-                    dataSource={this.state.expenses}
-                    onChange={this.handleChange}
-                    pagination={{ position: "none" }}
-                    scroll={{ x: 1000, y: 450 }}
-                    size="middle"
-                />
-            </div>
+            <Row
+                gutter={[0, 20]}
+                type="flex"
+                justify="space-around"
+                align="middle"
+            >
+                <Col span={24}>
+                    <StatisticComponent data={this.state.expenses} />
+                </Col>
+                <Col>
+                    <WrappedFormComponent onDataAdd={this.handleAddData} />
+                </Col>
+                <Col span={24}>
+                    <Table
+                        columns={columns}
+                        dataSource={this.state.expenses}
+                        onChange={this.handleChange}
+                        scroll={{ x: 1000, y: 450 }}
+                        size="middle"
+                    />
+                </Col>
+            </Row>
         );
     }
 }

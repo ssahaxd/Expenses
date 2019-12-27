@@ -3,7 +3,9 @@ import { Statistic, Row, Col } from "antd";
 
 const StatisticComponent = ({ data }) => {
     const totalExpense = data.reduce((accumulator, currentVal) => {
-        return accumulator + currentVal["amount"];
+        // console.log(accumulator, currentVal["amount"]);
+
+        return accumulator + parseFloat(currentVal["amount"]);
     }, 0);
     let allPersons = new Set();
     data.forEach(element => {

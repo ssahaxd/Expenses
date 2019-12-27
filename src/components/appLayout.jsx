@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Menu } from "antd";
 import ExpenseTable from "./expenseTable";
-import FormComponent from "./form";
 
 const { Header, Content } = Layout;
 
@@ -24,7 +23,6 @@ class AppLayout extends Component {
                 <Content style={{ padding: "5px 50px" }}>
                     <Layout style={{ background: "#fff" }}>
                         <Content style={{ padding: "24px 24px" }}>
-                            <FormComponent />
                             <ExpenseTable />
                         </Content>
                     </Layout>
