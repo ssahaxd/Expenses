@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { getExpenses } from "../services/fakeExpenseService";
-import { Columns } from "../services/columns";
+import { getExpenses } from "../../services/fakeExpenseService";
+import { Columns } from "../../services/columns";
 import { Table, Row, Col } from "antd";
-import StatisticComponent from "./statisticComponent";
-import WrappedFormComponent from "./form";
+import StatisticComponent from "../statisticComponent";
+import WrappedFormComponent from "../form";
 
 class ExpenseTable extends Component {
     state = {
