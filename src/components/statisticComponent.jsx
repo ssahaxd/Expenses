@@ -9,7 +9,7 @@ const StatisticComponent = ({ data }) => {
     }, 0);
     let allPersons = new Set();
     data.forEach(element => {
-        allPersons.add(element.name);
+        allPersons.add(element.name.toLowerCase());
     });
 
     return (
@@ -20,7 +20,7 @@ const StatisticComponent = ({ data }) => {
             <Col span={6} xs={24} md={6}>
                 <Statistic
                     title="Average"
-                    value={totalExpense / allPersons.size}
+                    value={(totalExpense / allPersons.size).toFixed(2)}
                     prefix="₹"
                     suffix={`/ person (${allPersons.size})`}
                 />

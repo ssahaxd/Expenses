@@ -71,6 +71,8 @@ class FormComponent extends Component {
                 this.props.onDataAdd(values);
             }
         });
+        this.props.form.resetFields();
+        console.log(this.props.form.getFieldsError());
     };
 
     render() {
@@ -82,10 +84,13 @@ class FormComponent extends Component {
         } = this.props.form;
 
         // Only show error after a field is touched.
-        const usernameError =
+        let usernameError =
             isFieldTouched("username") && getFieldError("username");
-        const passwordError =
+        let passwordError =
             isFieldTouched("password") && getFieldError("password");
+        let dateError = isFieldTouched("date") && getFieldError("date");
+        let categoryError =
+            isFieldTouched("category") && getFieldError("category");
 
         const config = {
             rules: [
@@ -135,11 +140,17 @@ class FormComponent extends Component {
                     })(<Input prefix="₹" type="number" placeholder="Amount" />)}
                 </Form.Item>
 
-                <Form.Item>
+                <Form.Item
+                    validateStatus={dateError ? "error" : ""}
+                    help={dateError || ""}
+                >
                     {getFieldDecorator("date", config)(<DatePicker />)}
                 </Form.Item>
 
-                <Form.Item>
+                <Form.Item
+                    validateStatus={categoryError ? "error" : ""}
+                    help={categoryError || ""}
+                >
                     {getFieldDecorator("category", {
                         rules: [
                             {
