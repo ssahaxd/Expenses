@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { getExpenses } from "../../services/fakeExpenseService";
+// import { getExpenses } from "../../services/fakeExpenseService";
 import { Columns } from "../../services/columns";
 import { Table, Row, Col } from "antd";
 import StatisticComponent from "../statisticComponent";
 import WrappedFormComponent from "../form";
 import { withFirebase } from "./../Firebase/context";
-import { titleCase } from "voca";
 
 class ExpenseTable extends Component {
     constructor(props) {
@@ -20,21 +19,33 @@ class ExpenseTable extends Component {
 
     componentDidMount() {
         this.setState({ loading: true });
-        this.props.firebase.expenses().on("value", snapshot => {
-            if (snapshot.val() !== null) {
-                const data = snapshot.val();
-                const expenses = Object.keys(data).map(id => {
-                    return { key: id, ...data[id] };
+        this.unsubscribe = this.props.firebase
+            .expenses()
+            .onSnapshot(snapshot => {
+                let expenses = [];
+                snapshot.forEach(doc => {
+                    expenses.push({ key: doc.id, ...doc.data() });
                 });
-
                 this.setState({ expenses, loading: false });
-            } else this.setState({ loading: false });
-        });
+            });
+
+        // this.setState({ loading: true });
+        // this.unsubscribe = this.props.firebase
+        //     .getExpenseByGroup("g1")
+        //     .onSnapshot(snapshot => {
+        //         let expenses = [];
+        //         snapshot.forEach(doc => {
+        //             expenses.push({ key: doc.id, ...doc.data() });
+        //         });
+        //         this.setState({ expenses, loading: false });
+        //     });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe && this.unsubscribe();
     }
 
     handleChange = (pagination, filters, sorter) => {
-        // console.log(pagination, filters, sorter);
-
         this.setState({
             filteredInfo: filters,
             sortedInfo: sorter
@@ -42,39 +53,28 @@ class ExpenseTable extends Component {
     };
 
     handleDelete = key => {
-        this.props.firebase
-            .deleteExpense(key)
-            .then(() => {
-                const expenses = [...this.state.expenses];
-                this.setState({
-                    expenses: expenses.filter(item => item.key !== key)
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        this.props.firebase.deleteExpense(key).catch(error => {
+            console.log("error while Deleting", error);
+        });
     };
 
     handleAddData = ({ name, amount, date, category }) => {
         const processedData = {
-            name: titleCase(name.trim()),
-            category: titleCase(category[0]),
+            name: name.trim().toLocaleLowerCase(),
+            category: category[0],
             subCategory: [...category.slice(1, 3)],
             date: date.format("YYYY-MM-DD"),
-            amount: parseFloat(amount)
+            amount: parseFloat(amount),
+            gid: "g1"
         };
 
         this.props.firebase
             .addExpense(processedData)
-            // .then(({ key }) => {
-            //     const expenses = [
-            //         { key: key, ...processedData },
-            //         ...this.state.expenses
-            //     ];
-            //     this.setState({ expenses });
-            // })
+            .then(docRef => {
+                console.log("Document written with ID: ", docRef.id);
+            })
             .catch(error => {
-                console.log(error);
+                console.log("error while writing data", error);
             });
     };
 
@@ -90,9 +90,9 @@ class ExpenseTable extends Component {
                 justify="space-around"
                 align="middle"
             >
-                {/* <Col span={24}>
+                <Col span={24}>
                     <StatisticComponent data={this.state.expenses} />
-        </Col>*/}
+                </Col>
                 <Col>
                     <WrappedFormComponent onDataAdd={this.handleAddData} />
                 </Col>

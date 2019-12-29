@@ -1,5 +1,6 @@
 import React from "react";
 import { Tag, Avatar, Popconfirm } from "antd";
+import { titleCase } from "voca";
 
 export function Columns(
     filteredInfo,
@@ -22,7 +23,7 @@ export function Columns(
                             backgroundColor: "#fde3cf"
                         }}
                     >
-                        {text[0]}
+                        {text[0].toUpperCase()}
                     </Avatar>
                     <a
                         href="# "
@@ -31,7 +32,7 @@ export function Columns(
                             verticalAlign: "middle"
                         }}
                     >
-                        {text}
+                        {titleCase(text)}
                     </a>
                 </div>
             ),
@@ -57,7 +58,7 @@ export function Columns(
             title: "Category",
             dataIndex: "category",
             key: "category",
-            render: text => <Tag color="green">{text}</Tag>
+            render: text => <Tag color="green">{titleCase(text)}</Tag>
         },
         {
             title: "Sub-Category",

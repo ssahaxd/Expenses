@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
-import "firebase/database";
+// import "firebase/database";
+import "firebase/firestore";
 
 // const config = {
 //     apiKey: process.env.REACT_APP_API_KEY,
@@ -28,7 +29,13 @@ class Firebase {
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
-        this.db = app.database();
+        // this.db = app.database();
+        this.db = app.firestore();
+        app.firestore().settings({
+            cacheSizeBytes: app.firestore.CACHE_SIZE_UNLIMITED
+        });
+
+        app.firestore().enablePersistence();
     }
 
     doCreateUserWithEmailAndPassword = (email, password) =>
@@ -44,12 +51,16 @@ class Firebase {
     doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
 
-    user = uid => this.db.ref(`users/${uid}`);
+    user = uid => this.db.doc(`users/${uid}`);
+    users = () => this.db.collection("users");
+    expenses = () => this.db.collection("expenses");
+    addExpense = expense => this.db.collection("expenses").add(expense);
+    deleteExpense = key => this.db.doc(`expenses/${key}`).delete();
 
-    users = () => this.db.ref("users");
-    expenses = () => this.db.ref("expenses");
-    addExpense = expense => this.db.ref("expenses").push(expense);
-    deleteExpense = key => this.db.ref(`expenses/${key}`).remove();
+    getExpenseByGroup = gid =>
+        this.db.collection("expenses").where("gid", "==", gid);
+
+    addCategory = category => this.db.collection("categories").push(category);
 }
 
 export default Firebase;

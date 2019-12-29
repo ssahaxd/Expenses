@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, DatePicker, Cascader } from "antd";
 
-const residences = [
+const category = [
     {
         value: "travel",
         label: "Travel",
@@ -67,12 +67,11 @@ class FormComponent extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                // console.log("Received values of form: ", values);
                 this.props.onDataAdd(values);
             }
         });
         this.props.form.resetFields();
-        // console.log(this.props.form.getFieldsError());
+        this.props.form.validateFields();
     };
 
     render() {
@@ -133,11 +132,19 @@ class FormComponent extends Component {
                     {getFieldDecorator("amount", {
                         rules: [
                             {
+                                warning: false,
                                 required: true,
                                 message: "Please input the Amount!"
                             }
                         ]
-                    })(<Input prefix="₹" type="number" placeholder="Amount" />)}
+                    })(
+                        <Input
+                            prefix="₹"
+                            type="number"
+                            min={0}
+                            placeholder="Amount"
+                        />
+                    )}
                 </Form.Item>
 
                 <Form.Item
@@ -156,11 +163,11 @@ class FormComponent extends Component {
                             {
                                 type: "array",
                                 required: true,
-                                message:
-                                    "Please select your habitual residence!"
+                                message: "Please select the Date",
+                                suppressWarning: true
                             }
                         ]
-                    })(<Cascader options={residences} />)}
+                    })(<Cascader options={category} />)}
                 </Form.Item>
 
                 <Form.Item>
