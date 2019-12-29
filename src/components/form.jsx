@@ -67,12 +67,12 @@ class FormComponent extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log("Received values of form: ", values);
+                // console.log("Received values of form: ", values);
                 this.props.onDataAdd(values);
             }
         });
         this.props.form.resetFields();
-        console.log(this.props.form.getFieldsError());
+        // console.log(this.props.form.getFieldsError());
     };
 
     render() {

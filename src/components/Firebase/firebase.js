@@ -47,6 +47,9 @@ class Firebase {
     user = uid => this.db.ref(`users/${uid}`);
 
     users = () => this.db.ref("users");
+    expenses = () => this.db.ref("expenses");
+    addExpense = expense => this.db.ref("expenses").push(expense);
+    deleteExpense = key => this.db.ref(`expenses/${key}`).remove();
 }
 
 export default Firebase;

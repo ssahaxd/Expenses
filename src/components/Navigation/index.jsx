@@ -5,8 +5,6 @@ import { Layout, Menu } from "antd";
 import * as ROUTER from "../../constants/routes";
 
 function Navigation(props) {
-    console.log(props);
-
     return (
         <Layout.Header className="header">
             <div className="logo"></div>

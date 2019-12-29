@@ -1,7 +1,12 @@
 import React from "react";
-import { Divider, Tag, Avatar, Popconfirm } from "antd";
+import { Tag, Avatar, Popconfirm } from "antd";
 
-export function Columns(filteredInfo, sortedInfo, handleDelete) {
+export function Columns(
+    filteredInfo,
+    sortedInfo,
+    handleDelete,
+    tableUsers = ["Sandip", "Soutrick", "Subham", "Sanchayan", "Rahul"]
+) {
     return [
         {
             title: "Name",
@@ -12,25 +17,29 @@ export function Columns(filteredInfo, sortedInfo, handleDelete) {
             render: text => (
                 <div>
                     <Avatar
-                        style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                        style={{
+                            color: "#f56a00",
+                            backgroundColor: "#fde3cf"
+                        }}
                     >
                         {text[0]}
                     </Avatar>
                     <a
                         href="# "
-                        style={{ marginLeft: 16, verticalAlign: "middle" }}
+                        style={{
+                            marginLeft: 16,
+                            verticalAlign: "middle"
+                        }}
                     >
                         {text}
                     </a>
                 </div>
             ),
-            filters: [
-                { text: "Sandip", value: "Sandip" },
-                { text: "Soutrick", value: "Soutrick" },
-                { text: "Subham", value: "Subham" },
-                { text: "Sanchayan", value: "Sanchayan" },
-                { text: "Sayantan", value: "Sayantan" }
-            ],
+            filters: tableUsers.map(user => ({
+                text: user,
+                value: user.toLocaleLowerCase()
+            })),
+
             filteredValue: filteredInfo.name || null,
             onFilter: (value, record) => record.name.includes(value),
             sorter: (a, b) => a.name.length - b.name.length,
@@ -48,9 +57,7 @@ export function Columns(filteredInfo, sortedInfo, handleDelete) {
             title: "Category",
             dataIndex: "category",
             key: "category",
-            render: text => {
-                return text.name;
-            }
+            render: text => <Tag color="green">{text}</Tag>
         },
         {
             title: "Sub-Category",
@@ -81,11 +88,11 @@ export function Columns(filteredInfo, sortedInfo, handleDelete) {
 
             render: record => (
                 <span>
-                    <Tag color="green">
+                    {/* <Tag color="green">
                         <a href="# ">Edit</a>
                     </Tag>
 
-                    <Divider type="vertical" />
+                    <Divider type="vertical" /> */}
                     <Popconfirm
                         title="Sure to delete?"
                         onConfirm={() => handleDelete(record.key)}
