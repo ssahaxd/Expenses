@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Layout, Menu } from "antd";
-import SignOutButton from "../SignOut";
 
 import * as ROUTER from "../../constants/routes";
 

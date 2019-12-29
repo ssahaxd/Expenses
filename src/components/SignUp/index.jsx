@@ -26,21 +26,28 @@ class SignUpFormBase extends Component {
     }
 
     onSubmit = event => {
+        event.preventDefault();
         const { username, email, passwordOne } = this.state;
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
+                this.props.firebase
+                    .user(authUser.user.uid)
+                    .set({ username, email });
+            })
+            .then(() => {
                 this.setState({ ...INITIAL_STATE });
                 this.props.history.push(ROUTES.HOME);
             })
             .catch(error => {
                 this.setState({ error });
             });
-        event.preventDefault();
     };
+
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
+
     render() {
         const { username, email, passwordOne, passwordTwo, error } = this.state;
         const isInvalid =
