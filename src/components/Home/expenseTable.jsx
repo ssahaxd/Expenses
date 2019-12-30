@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { getExpenses } from "../../redux";
+import {
+    setExpenses,
+    setLoadingTrue,
+    setLoadingFalse,
+    setSortedInfo,
+    setFilteredInfo
+} from "../../redux";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import { Table, Row, Col } from "antd";
@@ -8,18 +14,8 @@ import WrappedFormComponent from "../form";
 import StatisticComponent from "../statisticComponent";
 
 class ExpenseTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            // expenses: [],
-            filteredInfo: null,
-            sortedInfo: null
-        };
-    }
-
     componentDidMount() {
-        this.setState({ loading: true });
+        this.props.setLoadingTrue();
         this.unsubscribe = this.props.firebase
             .expenses()
             .onSnapshot(snapshot => {
@@ -27,8 +23,8 @@ class ExpenseTable extends Component {
                 snapshot.forEach(doc => {
                     expenses.push({ key: doc.id, ...doc.data() });
                 });
-                this.setState({ loading: false });
-                this.props.getExpenses(expenses);
+                this.props.setLoadingFalse();
+                this.props.setExpenses(expenses);
             });
     }
 
@@ -37,10 +33,8 @@ class ExpenseTable extends Component {
     }
 
     handleChange = (pagination, filters, sorter) => {
-        this.setState({
-            filteredInfo: filters,
-            sortedInfo: sorter
-        });
+        this.props.setFilteredInfo(filters);
+        this.props.setSortedInfo(sorter);
     };
 
     handleDelete = key => {
@@ -70,7 +64,7 @@ class ExpenseTable extends Component {
     };
 
     render() {
-        let { sortedInfo, filteredInfo, loading } = this.state;
+        let { expenses, loading, sortedInfo, filteredInfo } = this.props;
         sortedInfo = sortedInfo || {};
         filteredInfo = filteredInfo || {};
         const columns = Columns(filteredInfo, sortedInfo, this.handleDelete);
@@ -91,7 +85,7 @@ class ExpenseTable extends Component {
                     <Table
                         loading={loading}
                         columns={columns}
-                        dataSource={this.props.expenses}
+                        dataSource={expenses}
                         onChange={this.handleChange}
                         scroll={{ x: 1000, y: 450 }}
                         size="middle"
@@ -104,13 +98,20 @@ class ExpenseTable extends Component {
 
 const mapStateToProps = state => {
     return {
-        expenses: state.expenses.expenses
+        expenses: state.expensesTable.expenses,
+        loading: state.expensesTable.loading,
+        filteredInfo: state.expensesTable.filteredInfo,
+        sortedInfo: state.expensesTable.sortedInfo
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getExpenses: payload => dispatch(getExpenses(payload))
+        setExpenses: expenses => dispatch(setExpenses(expenses)),
+        setLoadingTrue: () => dispatch(setLoadingTrue()),
+        setLoadingFalse: () => dispatch(setLoadingFalse()),
+        setFilteredInfo: filters => dispatch(setFilteredInfo(filters)),
+        setSortedInfo: sorter => dispatch(setSortedInfo(sorter))
     };
 };
 
