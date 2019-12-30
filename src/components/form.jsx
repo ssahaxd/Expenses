@@ -83,10 +83,8 @@ class FormComponent extends Component {
         } = this.props.form;
 
         // Only show error after a field is touched.
-        let usernameError =
-            isFieldTouched("username") && getFieldError("username");
-        let passwordError =
-            isFieldTouched("password") && getFieldError("password");
+        let nameError = isFieldTouched("name") && getFieldError("name");
+        let amountError = isFieldTouched("amount") && getFieldError("amount");
         let dateError = isFieldTouched("date") && getFieldError("date");
         let categoryError =
             isFieldTouched("category") && getFieldError("category");
@@ -103,14 +101,14 @@ class FormComponent extends Component {
         return (
             <Form layout="inline" onSubmit={this.handleSubmit}>
                 <Form.Item
-                    validateStatus={usernameError ? "error" : ""}
-                    help={usernameError || ""}
+                    validateStatus={nameError ? "error" : ""}
+                    help={nameError || ""}
                 >
                     {getFieldDecorator("name", {
                         rules: [
                             {
                                 required: true,
-                                message: "Please select the name!"
+                                message: "Please Enter the name!"
                             }
                         ]
                     })(
@@ -126,8 +124,8 @@ class FormComponent extends Component {
                     )}
                 </Form.Item>
                 <Form.Item
-                    validateStatus={passwordError ? "error" : ""}
-                    help={passwordError || ""}
+                    validateStatus={amountError ? "error" : ""}
+                    help={amountError || ""}
                 >
                     {getFieldDecorator("amount", {
                         rules: [

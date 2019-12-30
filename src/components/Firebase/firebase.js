@@ -42,6 +42,7 @@ class Firebase {
 
     user = uid => this.db.doc(`users/${uid}`);
     users = () => this.db.collection("users");
+    addUser = (uid, udata) => this.db.doc(`users/${uid}`).set(udata);
     expenses = () => this.db.collection("expenses");
     addExpense = expense => this.db.collection("expenses").add(expense);
     deleteExpense = key => this.db.doc(`expenses/${key}`).delete();

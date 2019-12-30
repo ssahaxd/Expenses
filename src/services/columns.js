@@ -62,8 +62,8 @@ export function Columns(
         },
         {
             title: "Sub-Category",
-            key: "subCategory",
-            dataIndex: "subCategory",
+            key: "subcategory",
+            dataIndex: "subcategory",
             render: tags => (
                 <span>
                     {tags.map(tag => {
