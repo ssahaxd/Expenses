@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-// import { getExpenses } from "../../services/fakeExpenseService";
-import { Columns } from "../../services/columns";
-import { Table, Row, Col } from "antd";
-import StatisticComponent from "../statisticComponent";
-import WrappedFormComponent from "../form";
+import { getExpenses } from "../../redux";
+import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
+import { Table, Row, Col } from "antd";
+import { Columns } from "../../services/columns";
+import WrappedFormComponent from "../form";
+import StatisticComponent from "../statisticComponent";
 
 class ExpenseTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            expenses: [],
+            // expenses: [],
             filteredInfo: null,
             sortedInfo: null
         };
@@ -26,19 +27,9 @@ class ExpenseTable extends Component {
                 snapshot.forEach(doc => {
                     expenses.push({ key: doc.id, ...doc.data() });
                 });
-                this.setState({ expenses, loading: false });
+                this.setState({ loading: false });
+                this.props.getExpenses(expenses);
             });
-
-        // this.setState({ loading: true });
-        // this.unsubscribe = this.props.firebase
-        //     .getExpenseByGroup("g1")
-        //     .onSnapshot(snapshot => {
-        //         let expenses = [];
-        //         snapshot.forEach(doc => {
-        //             expenses.push({ key: doc.id, ...doc.data() });
-        //         });
-        //         this.setState({ expenses, loading: false });
-        //     });
     }
 
     componentWillUnmount() {
@@ -91,7 +82,7 @@ class ExpenseTable extends Component {
                 align="middle"
             >
                 <Col span={24}>
-                    <StatisticComponent data={this.state.expenses} />
+                    <StatisticComponent data={this.props.expenses} />
                 </Col>
                 <Col>
                     <WrappedFormComponent onDataAdd={this.handleAddData} />
@@ -100,7 +91,7 @@ class ExpenseTable extends Component {
                     <Table
                         loading={loading}
                         columns={columns}
-                        dataSource={this.state.expenses}
+                        dataSource={this.props.expenses}
                         onChange={this.handleChange}
                         scroll={{ x: 1000, y: 450 }}
                         size="middle"
@@ -111,4 +102,19 @@ class ExpenseTable extends Component {
     }
 }
 
-export default withFirebase(ExpenseTable);
+const mapStateToProps = state => {
+    return {
+        expenses: state.expenses.expenses
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getExpenses: payload => dispatch(getExpenses(payload))
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withFirebase(ExpenseTable));

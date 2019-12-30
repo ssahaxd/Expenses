@@ -4,9 +4,8 @@ import Navigation from "../Navigation";
 import CollectionsPage from "../common/modal";
 import SignInPage from "../SignIn/";
 import SignUpPage from "../SignUp/";
-
-import * as ROUTER from "../../constants/routes";
 import AppLayout from "../Home/appLayout";
+import * as ROUTER from "../../constants/routes";
 
 function App() {
     return (
