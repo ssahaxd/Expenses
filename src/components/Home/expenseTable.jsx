@@ -41,11 +41,13 @@ const ExpenseTable = props => {
                         ...doc.data()
                     });
                 });
+                console.log(expenses);
+
                 setExpenses(expenses);
                 if (loadingRef.current === true) setLoadingFalse();
             },
             error => {
-                console.log("Error Fetching Expenses", error);
+                console.log("Error Fetching Expenses", error.message);
             }
         );
 

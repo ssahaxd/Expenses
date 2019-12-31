@@ -6,7 +6,7 @@ export function Columns(
     filteredInfo,
     sortedInfo,
     handleDelete,
-    tableUsers = ["Sandip", "Soutrick", "Subham", "Sanchayan", "Rahul"]
+    tableUsers = ["Sandip", "Soutrick", "Subham", "Sanchayan"]
 ) {
     return [
         {
