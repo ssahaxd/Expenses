@@ -4,4 +4,4 @@
 
 app created with using `create-react-app` . It uses firebase firestore to store data online
 
-![](https://prnt.sc/qhx54s)
+![](https://i.snipboard.io/NBxDtn.jpg)
