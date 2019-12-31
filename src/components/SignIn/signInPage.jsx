@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Row, Col, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
+import { setUser } from "../../redux";
+import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes";
@@ -11,20 +13,28 @@ class NormalLoginForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log(values);
-
                 const { email, password } = values;
-                console.log(email, password);
-
                 this.props.firebase
                     .doSignInWithEmailAndPassword(email, password)
-                    .then(() => {
-                        console.log("Do redux stuff");
-
+                    .then(({ user }) => {
+                        this.props.firebase.user(user.uid).onSnapshot(
+                            snapshot => {
+                                this.props.setUser({
+                                    uid: user.uid,
+                                    userInfo: snapshot.data()
+                                });
+                            },
+                            error => {
+                                console.log(
+                                    "Error Fetcing profile data",
+                                    error.message
+                                );
+                            }
+                        );
                         this.props.history.push(ROUTES.HOME);
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.log("Opps Error code", error.message);
                     });
             }
         });
@@ -93,11 +103,23 @@ class NormalLoginForm extends Component {
     }
 }
 
-const SignInForm = compose(
-    withRouter,
-    withFirebase,
-    Form.create()
-)(NormalLoginForm);
+const mapStateToProps = state => {
+    return {
+        uid: state.uid,
+        userInfo: { ...state.userInfo }
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: uid => dispatch(setUser(uid))
+    };
+};
+
+const SignInForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(compose(withRouter, withFirebase, Form.create())(NormalLoginForm));
 
 const SignInPage = () => (
     <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">

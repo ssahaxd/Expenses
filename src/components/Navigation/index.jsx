@@ -12,10 +12,10 @@ const Navigation = () => {
                     <Link to={ROUTER.HOME}>HOME</Link>
                 </Menu.Item>
                 <Menu.Item key={ROUTER.LANDING}>
-                    <Link to={ROUTER.LANDING}>SIGN_IN</Link>
+                    <Link to={ROUTER.LANDING}>SIGN IN</Link>
                 </Menu.Item>
                 <Menu.Item key={ROUTER.SIGN_UP}>
-                    <Link to={ROUTER.SIGN_UP}>SIGN_UP</Link>
+                    <Link to={ROUTER.SIGN_UP}>SIGN UP</Link>
                 </Menu.Item>
             </Menu>
         </Layout.Header>

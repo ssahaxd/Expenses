@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { setUser } from "../../redux";
+import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
+import { Link, withRouter } from "react-router-dom";
 import { compose } from "recompose";
-
 import { Form, Input, Row, Col, Button, Typography } from "antd";
+import * as ROUTES from "../../constants/routes";
 
 const { Title } = Typography;
 
@@ -25,27 +28,31 @@ class RegistrationForm extends Component {
                     phone
                 } = values;
 
+                const userInfo = {
+                    firstname,
+                    lastname,
+                    username,
+                    email,
+                    phone
+                };
+
                 this.props.firebase
                     .doCreateUserWithEmailAndPassword(email, password)
-                    .then(authUser => {
-                        console.log(authUser.user.uid);
-
+                    .then(({ user }) => {
                         this.props.firebase
-                            .addUser(authUser.user.uid, {
-                                firstname,
-                                lastname,
-                                username,
-                                email,
-                                phone
-                            })
+                            .addUser(user.uid, userInfo)
                             .then(() => {
                                 console.log(
-                                    `User ${firstname} Created with uid = ${authUser.user.uid}`
+                                    `User ${firstname} Created with uid = ${user.uid}`
                                 );
+                                this.props.setUser({
+                                    uid: user.uid,
+                                    userInfo
+                                });
                             })
                             .catch(error => {
                                 console.log(
-                                    "Error storinf user data",
+                                    "Error storing user data",
                                     error.message
                                 );
                             });
@@ -81,32 +88,6 @@ class RegistrationForm extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-
-        // const { autoCompleteResult } = this.state;
-        // const formItemLayout = {
-        //     labelCol: {
-        //         xs: { span: 24 },
-        //         sm: { span: 8 }
-        //     },
-        //     wrapperCol: {
-        //         xs: { span: 24 },
-        //         sm: { span: 16 }
-        //     }
-        // };
-
-        // const prefixSelector = getFieldDecorator("prefix", {
-        //     initialValue: "+91"
-        // })(
-        //     <Select style={{ width: 70 }}>
-        //         <Option value="86">+86</Option>
-        //         <Option value="87">+87</Option>
-        //     </Select>
-        // );
-
-        // const websiteOptions = autoCompleteResult.map(website => (
-        //     <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-        // ));
-
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
@@ -201,33 +182,35 @@ class RegistrationForm extends Component {
                         />
                     )}
                 </Form.Item>
-                {/* <Form.Item label="Website">
-                    {getFieldDecorator("website", {
-                        rules: [
-                            { required: true, message: "Please input website!" }
-                        ]
-                    })(
-                        <AutoComplete
-                            dataSource={websiteOptions}
-                            onChange={this.handleWebsiteChange}
-                            placeholder="website"
-                        >
-                            <Input />
-                        </AutoComplete>
-                    )}
-                </Form.Item> */}
-
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Register
-                    </Button>
+                    <Link to={ROUTES.HOME}>
+                        <Button type="primary" htmlType="submit">
+                            Register
+                        </Button>
+                    </Link>
                 </Form.Item>
             </Form>
         );
     }
 }
 
-const SignUpForm = compose(withFirebase, Form.create())(RegistrationForm);
+const mapStateToProps = state => {
+    return {
+        uid: state.uid,
+        userInfo: { ...state.userInfo }
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: uid => dispatch(setUser(uid))
+    };
+};
+
+const SignUpForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(compose(withRouter, withFirebase, Form.create())(RegistrationForm));
 
 const SignUpPage = () => (
     <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">
