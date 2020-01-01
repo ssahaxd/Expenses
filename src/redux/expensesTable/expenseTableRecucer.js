@@ -3,11 +3,14 @@ import {
     SET_LODING_TRUE,
     SET_LODING_FALSE,
     SET_SORTED_INFO,
-    SET_FILTERED_INFO
+    SET_FILTERED_INFO,
+    SET_SHOWING_TABLE_FALSE,
+    SET_SHOWING_TABLE_TRUE,
+    SET_EXP_GR_ID
 } from "./expenseTableActionTypes";
 
 const initialState = {
-    showingTable: true,
+    showingTable: false,
     expGrId: null,
     expenses: [],
     loading: false,
@@ -41,6 +44,15 @@ const expenseTableReducer = (state = initialState, action) => {
             return {
                 ...state,
                 filteredInfo: action.payload
+            };
+        case SET_SHOWING_TABLE_FALSE:
+            return { ...state, showingTable: false };
+        case SET_SHOWING_TABLE_TRUE:
+            return { ...state, showingTable: true };
+        case SET_EXP_GR_ID:
+            return {
+                ...state,
+                expGrId: action.payload
             };
         default:
             return state;

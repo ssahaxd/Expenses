@@ -3,7 +3,10 @@ export {
     setLoadingTrue,
     setLoadingFalse,
     setFilteredInfo,
-    setSortedInfo
+    setSortedInfo,
+    setExpGrId,
+    setShowingTableTrue,
+    setShowingTableFalse
 } from "./expensesTable/expenseTableAction";
 
 export { setUser, resetUid } from "./user/userAction";

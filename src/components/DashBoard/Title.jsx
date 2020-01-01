@@ -5,8 +5,8 @@ const Title = ({ title, buttons, content }) => {
     return (
         <div
             style={{
-                backgroundColor: "#F5F5F5",
-                padding: "20px 20% 5px"
+                backgroundColor: "#F5F5F5"
+                // padding: "20px 20% 5px"
             }}
         >
             <PageHeader

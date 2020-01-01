@@ -7,6 +7,11 @@ import { SignInForm } from "../SignIn/signInPage";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import ExpenseTable from "../ExpenseTable/expenseTable";
+import {
+    setExpGrId,
+    setShowingTableTrue,
+    setShowingTableFalse
+} from "../../redux";
 
 class DashBoardBase extends Component {
     showLogin = () => (
@@ -32,7 +37,7 @@ class DashBoardBase extends Component {
                         handleNewGroup={this.handleNewGroup}
                     />
                 ]}
-                content={<ExpGropuList />}
+                content={<ExpGropuList onGrSelect={this.handleGrSelect} />}
             />
             {this.props.showingTable ? (
                 <Title
@@ -43,13 +48,19 @@ class DashBoardBase extends Component {
                             handleNewGroup={this.handleNewGroup}
                         />
                     ]}
-                    content={<ExpenseTable />}
+                    content={<ExpenseTable gid={this.props.expGrId} />}
                 />
             ) : (
                 ""
             )}
         </div>
     );
+
+    handleGrSelect = gid => {
+        this.props.setExpGrId(gid);
+        this.props.setShowingTableTrue();
+    };
+
     handleNewGroup = values => {
         values.users.push(this.props.userInfo.username);
         this.props.firebase
@@ -72,13 +83,16 @@ const mapStateToProps = state => {
     return {
         uid: state.user.uid,
         userInfo: state.user.userInfo,
-        showingTable: state.expensesTable.showingTable
+        showingTable: state.expensesTable.showingTable,
+        expGrId: state.expensesTable.expGrId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        // setExpenses: expenses => dispatch(setExpenses(expenses)),
+        setExpGrId: gid => dispatch(setExpGrId(gid)),
+        setShowingTableTrue: () => dispatch(setShowingTableTrue()),
+        setShowingTableFalse: () => dispatch(setShowingTableFalse())
     };
 };
 

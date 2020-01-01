@@ -24,15 +24,18 @@ const ExpenseTable = props => {
         expenses,
         loading,
         sortedInfo,
-        filteredInfo
+        filteredInfo,
+        gid
     } = props;
 
     const loadingRef = useRef();
     loadingRef.current = loading;
 
     useEffect(() => {
+        console.log(gid);
+
         setLoadingTrue();
-        const unsubscribe = firebase.expenses().onSnapshot(
+        const unsubscribe = firebase.getExpenseByGroup(gid).onSnapshot(
             snapshot => {
                 let expenses = [];
                 snapshot.forEach(doc => {
@@ -97,17 +100,9 @@ const ExpenseTable = props => {
         //         <WrappedFormComponent onDataAdd={handleAddData} />
         //     </Col>
         //     <Col span={24}>
-        //         <Table
-        //             loading={loading}
-        //             columns={columns}
-        //             dataSource={expenses}
-        //             onChange={handleChange}
-        //             scroll={{ x: 1000, y: 450 }}
-        //             size="middle"
-        //         />
+
         //     </Col>
         // </Row>
-
         <Table
             loading={loading}
             columns={columns}

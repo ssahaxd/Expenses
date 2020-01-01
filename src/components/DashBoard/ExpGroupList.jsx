@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { List, Avatar, Icon } from "antd";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
@@ -54,7 +53,16 @@ class ExpGroupList extends Component {
                                     {item.gname[0].toUpperCase()}
                                 </Avatar>
                             }
-                            title={<Link to={"/home"}>{item.gname}</Link>}
+                            title={
+                                <a
+                                    href="# "
+                                    onClick={() =>
+                                        this.props.onGrSelect(item.key)
+                                    }
+                                >
+                                    {item.gname}
+                                </a>
+                            }
                             description={
                                 <div>
                                     {`${item.description} : you and ${item.users

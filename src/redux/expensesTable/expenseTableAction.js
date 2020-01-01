@@ -3,8 +3,25 @@ import {
     SET_LODING_TRUE,
     SET_LODING_FALSE,
     SET_SORTED_INFO,
-    SET_FILTERED_INFO
+    SET_FILTERED_INFO,
+    SET_SHOWING_TABLE_FALSE,
+    SET_SHOWING_TABLE_TRUE,
+    SET_EXP_GR_ID
 } from "./expenseTableActionTypes";
+
+export const setExpGrId = gid => {
+    return {
+        type: SET_EXP_GR_ID,
+        payload: gid
+    };
+};
+
+export const setShowingTableTrue = () => {
+    return { type: SET_SHOWING_TABLE_TRUE };
+};
+export const setShowingTableFalse = () => {
+    return { type: SET_SHOWING_TABLE_FALSE };
+};
 
 export const setExpenses = expenses => {
     return {
