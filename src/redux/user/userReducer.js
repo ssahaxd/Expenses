@@ -1,4 +1,8 @@
-import { RESET_USER_ID, SET_USER } from "./userActionType";
+import {
+    RESET_USER_ID,
+    SET_USER,
+    UPDATE_USER_EXP_GROUPS
+} from "./userActionType";
 
 const initialState = JSON.parse(localStorage.getItem("user")) || {
     uid: null,
@@ -7,7 +11,8 @@ const initialState = JSON.parse(localStorage.getItem("user")) || {
         firstname: "",
         lastname: "",
         username: ""
-    }
+    },
+    userExpGropus: [{ titel: "Hello" }]
 };
 
 const useReducer = (state = initialState, action) => {
@@ -23,6 +28,11 @@ const useReducer = (state = initialState, action) => {
                 ...state,
                 uid: null,
                 userInfo: { ...initialState.userInfo }
+            };
+        case UPDATE_USER_EXP_GROUPS:
+            return {
+                ...state,
+                userExpGropus: { ...action.payload }
             };
         default:
             return state;

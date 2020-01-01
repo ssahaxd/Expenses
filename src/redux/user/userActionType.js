@@ -1,2 +1,3 @@
 export const RESET_USER_ID = "RESET_USER_ID";
 export const SET_USER = "SET_USER";
+export const UPDATE_USER_EXP_GROUPS = "UPDATE_USER_EXP_GROUPS";

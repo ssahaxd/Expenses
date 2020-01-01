@@ -1,9 +1,7 @@
 import React from "react";
-import { PageHeader, Button } from "antd";
+import { PageHeader } from "antd";
 
 const Title = ({ title, buttons, content }) => {
-    console.log(buttons);
-
     return (
         <div
             style={{
@@ -14,18 +12,7 @@ const Title = ({ title, buttons, content }) => {
             <PageHeader
                 ghost={false}
                 title={title}
-                extra={
-                    buttons.length
-                        ? buttons.map(button => (
-                              <Button
-                                  key={button.title}
-                                  onClick={button.onclick}
-                              >
-                                  {button.title}
-                              </Button>
-                          ))
-                        : ""
-                }
+                extra={buttons.length ? buttons.map(button => button) : ""}
             >
                 {content}
             </PageHeader>

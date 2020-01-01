@@ -55,6 +55,11 @@ class Firebase {
             .where("username", "==", username)
             .get();
 
+    expGroupRef = () => this.db.collection("expense-group");
+
+    addExpGroup = groupInfo =>
+        this.db.collection("expense-group").add(groupInfo);
+
     addCategory = category => this.db.collection("categories").push(category);
 }
 

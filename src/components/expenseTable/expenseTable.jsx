@@ -77,10 +77,10 @@ const ExpenseTable = props => {
         firebase
             .addExpense(processedData)
             .then(docRef => {
-                console.log("Document written with ID: ", docRef.id);
+                console.log("Expense group created with ID: ", docRef.id);
             })
             .catch(error => {
-                console.log("error while writing data", error);
+                console.log("error while creating expense group data", error);
             });
     };
 
@@ -89,24 +89,33 @@ const ExpenseTable = props => {
     const columns = Columns(filteredInfo, sortedInfo, handleDelete);
 
     return (
-        <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">
-            <Col span={24}>
-                <StatisticComponent data={expenses} />
-            </Col>
-            <Col>
-                <WrappedFormComponent onDataAdd={handleAddData} />
-            </Col>
-            <Col span={24}>
-                <Table
-                    loading={loading}
-                    columns={columns}
-                    dataSource={expenses}
-                    onChange={handleChange}
-                    scroll={{ x: 1000, y: 450 }}
-                    size="middle"
-                />
-            </Col>
-        </Row>
+        // <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">
+        //     <Col span={24}>
+        //         <StatisticComponent data={expenses} />
+        //     </Col>
+        //     <Col>
+        //         <WrappedFormComponent onDataAdd={handleAddData} />
+        //     </Col>
+        //     <Col span={24}>
+        //         <Table
+        //             loading={loading}
+        //             columns={columns}
+        //             dataSource={expenses}
+        //             onChange={handleChange}
+        //             scroll={{ x: 1000, y: 450 }}
+        //             size="middle"
+        //         />
+        //     </Col>
+        // </Row>
+
+        <Table
+            loading={loading}
+            columns={columns}
+            dataSource={expenses}
+            onChange={handleChange}
+            scroll={{ x: 1000, y: 450 }}
+            size="middle"
+        />
     );
 };
 

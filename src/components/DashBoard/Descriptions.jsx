@@ -2,7 +2,6 @@ import { Descriptions } from "antd";
 import React from "react";
 
 const Description = props => {
-    console.log(props);
     const { username, email, firstname, lastname } = props.userInfo;
 
     return (

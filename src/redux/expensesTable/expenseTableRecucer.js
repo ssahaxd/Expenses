@@ -7,6 +7,8 @@ import {
 } from "./expenseTableActionTypes";
 
 const initialState = {
+    showingTable: true,
+    expGrId: null,
     expenses: [],
     loading: false,
     filteredInfo: null,
