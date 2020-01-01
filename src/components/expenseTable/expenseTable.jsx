@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import { withFirebase } from "../Firebase/context";
 import { Table, Row, Col } from "antd";
-import { Columns } from "../../services/columns";
+import { Columns } from "./columns";
 import WrappedFormComponent from "../form";
 import StatisticComponent from "../statisticComponent";
 

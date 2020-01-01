@@ -49,6 +49,12 @@ class Firebase {
     getExpenseByGroup = gid =>
         this.db.collection("expenses").where("gid", "==", gid);
 
+    getUserByUserName = username =>
+        this.db
+            .collection("users")
+            .where("username", "==", username)
+            .get();
+
     addCategory = category => this.db.collection("categories").push(category);
 }
 

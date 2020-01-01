@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
-import ExpenseTable from "../expenseTable/expenseTable";
+import ExpenseTable from "../ExpenseTable/expenseTable";
 
 const { Content } = Layout;
 

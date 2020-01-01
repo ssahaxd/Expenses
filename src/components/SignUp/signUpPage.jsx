@@ -2,17 +2,14 @@ import React, { Component } from "react";
 import { setUser } from "../../redux";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
-import { Link, withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { Form, Input, Row, Col, Button, Typography } from "antd";
-import * as ROUTES from "../../constants/routes";
 
 const { Title } = Typography;
 
 class RegistrationForm extends Component {
     state = {
-        confirmDirty: false,
-        autoCompleteResult: []
+        confirmDirty: false
     };
 
     handleSubmit = e => {
@@ -24,44 +21,59 @@ class RegistrationForm extends Component {
                     lastname,
                     username,
                     email,
-                    password,
-                    phone
+                    password
                 } = values;
 
                 const userInfo = {
                     firstname,
                     lastname,
                     username,
-                    email,
-                    phone
+                    email
                 };
 
                 this.props.firebase
-                    .doCreateUserWithEmailAndPassword(email, password)
-                    .then(({ user }) => {
-                        this.props.firebase
-                            .addUser(user.uid, userInfo)
-                            .then(() => {
-                                console.log(
-                                    `User ${firstname} Created with uid = ${user.uid}`
-                                );
-                                this.props.setUser({
-                                    uid: user.uid,
-                                    userInfo
+                    .getUserByUserName(username)
+                    .then(querySnapshot => {
+                        if (querySnapshot.empty) {
+                            console.log("Username Available");
+
+                            this.props.firebase
+                                .doCreateUserWithEmailAndPassword(
+                                    email,
+                                    password
+                                )
+                                .then(({ user }) => {
+                                    this.props.firebase
+                                        .addUser(user.uid, userInfo)
+                                        .then(() => {
+                                            console.log(
+                                                `User ${firstname} Created with uid = ${user.uid}`
+                                            );
+                                            this.props.setUser({
+                                                uid: user.uid,
+                                                userInfo
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.log(
+                                                "Error storing user data",
+                                                error.message
+                                            );
+                                        });
+                                })
+                                .catch(error => {
+                                    console.log(
+                                        "error creatin user",
+                                        error.message
+                                    );
                                 });
-                            })
-                            .catch(error => {
-                                console.log(
-                                    "Error storing user data",
-                                    error.message
-                                );
-                            });
-                    })
-                    .catch(error => {
-                        console.log("error creatin user", error.message);
+                        } else {
+                            console.log("Usernmae not availabe");
+                        }
                     });
             }
         });
+        this.props.form.resetFields();
     };
 
     handleConfirmBlur = e => {
@@ -95,7 +107,7 @@ class RegistrationForm extends Component {
                         rules: [
                             {
                                 required: true,
-                                message: "Please input your nickname!"
+                                message: "Please input your Name!"
                             }
                         ]
                     })(<Input placeholder="First Name" />)}
@@ -105,7 +117,7 @@ class RegistrationForm extends Component {
                         rules: [
                             {
                                 required: true,
-                                message: "Please input your first name!",
+                                message: "Please input your last name!",
                                 whitespace: true
                             }
                         ]
@@ -166,28 +178,10 @@ class RegistrationForm extends Component {
                         />
                     )}
                 </Form.Item>
-
                 <Form.Item>
-                    {getFieldDecorator("phone", {
-                        rules: [
-                            {
-                                required: true,
-                                message: "Please input your phone number!"
-                            }
-                        ]
-                    })(
-                        <Input
-                            // addonBefore={prefixSelector}
-                            placeholder="Phone"
-                        />
-                    )}
-                </Form.Item>
-                <Form.Item>
-                    <Link to={ROUTES.HOME}>
-                        <Button type="primary" htmlType="submit">
-                            Register
-                        </Button>
-                    </Link>
+                    <Button type="primary" htmlType="submit">
+                        Register
+                    </Button>
                 </Form.Item>
             </Form>
         );
@@ -207,10 +201,10 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const SignUpForm = connect(
+export const SignUpForm = connect(
     mapStateToProps,
     mapDispatchToProps
-)(compose(withRouter, withFirebase, Form.create())(RegistrationForm));
+)(compose(withFirebase, Form.create())(RegistrationForm));
 
 const SignUpPage = () => (
     <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">

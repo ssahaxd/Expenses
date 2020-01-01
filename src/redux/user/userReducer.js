@@ -1,12 +1,11 @@
 import { RESET_USER_ID, SET_USER } from "./userActionType";
 
-const initialState = {
+const initialState = JSON.parse(localStorage.getItem("user")) || {
     uid: null,
     userInfo: {
         email: "",
         firstname: "",
         lastname: "",
-        phone: "",
         username: ""
     }
 };

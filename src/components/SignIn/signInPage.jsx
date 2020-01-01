@@ -19,10 +19,16 @@ class NormalLoginForm extends Component {
                     .then(({ user }) => {
                         this.props.firebase.user(user.uid).onSnapshot(
                             snapshot => {
-                                this.props.setUser({
+                                const userdata = {
                                     uid: user.uid,
                                     userInfo: snapshot.data()
-                                });
+                                };
+
+                                this.props.setUser({ ...userdata });
+                                localStorage.setItem(
+                                    "user",
+                                    JSON.stringify(userdata)
+                                );
                             },
                             error => {
                                 console.log(
@@ -31,7 +37,7 @@ class NormalLoginForm extends Component {
                                 );
                             }
                         );
-                        this.props.history.push(ROUTES.HOME);
+                        // this.props.history.push(ROUTES.HOME);
                     })
                     .catch(error => {
                         console.log("Opps Error code", error.message);
@@ -116,7 +122,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const SignInForm = connect(
+export const SignInForm = connect(
     mapStateToProps,
     mapDispatchToProps
 )(compose(withRouter, withFirebase, Form.create())(NormalLoginForm));

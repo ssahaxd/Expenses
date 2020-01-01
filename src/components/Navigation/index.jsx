@@ -14,6 +14,9 @@ const Navigation = () => {
                 <Menu.Item key={ROUTER.LANDING}>
                     <Link to={ROUTER.LANDING}>SIGN IN</Link>
                 </Menu.Item>
+                <Menu.Item key={ROUTER.DASHBOARD}>
+                    <Link to={ROUTER.DASHBOARD}>Dashboard</Link>
+                </Menu.Item>
                 <Menu.Item key={ROUTER.SIGN_UP}>
                     <Link to={ROUTER.SIGN_UP}>SIGN UP</Link>
                 </Menu.Item>

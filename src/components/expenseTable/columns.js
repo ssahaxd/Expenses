@@ -14,7 +14,7 @@ export function Columns(
             dataIndex: "name",
             key: "name",
             fixed: "left",
-            width: 170,
+            width: 150,
             render: text => (
                 <div>
                     <Avatar
