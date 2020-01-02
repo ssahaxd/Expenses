@@ -24,8 +24,7 @@ const ExpenseTable = props => {
         expenses,
         loading,
         sortedInfo,
-        filteredInfo,
-        gid
+        filteredInfo
     } = props;
 
     const loadingRef = useRef();
@@ -33,7 +32,7 @@ const ExpenseTable = props => {
 
     useEffect(() => {
         setLoadingTrue();
-        const unsubscribe = firebase.getExpenseByGroup(gid).onSnapshot(
+        const unsubscribe = firebase.expenses().onSnapshot(
             snapshot => {
                 let expenses = [];
                 snapshot.forEach(doc => {
@@ -70,7 +69,7 @@ const ExpenseTable = props => {
             name: name.trim().toLocaleLowerCase(),
             category: category[0],
             subcategory: [...category.slice(1, 3)],
-            date: date.format("YYYY-MM-DD"),
+            date: date.format("DD-MM-YYYY"),
             amount: parseFloat(amount),
             gid: "g1"
         };
