@@ -63,8 +63,9 @@ class AddGropuModal extends Component {
         const { form } = this.formRef.props;
         form.validateFields((err, values) => {
             if (err) {
-                return;
+                console.log(err.message);
             }
+
             this.props.handleNewGroup(values);
 
             form.resetFields();

@@ -13,7 +13,7 @@ class ExpGroupList extends Component {
         this.props.setGrLoadingTrue();
         this.unsubscribe = this.props.firebase
             .expGroupRef()
-            .where("users", "array-contains", this.props.userInfo.username)
+            .where("users", "array-contains", this.props.userInfo.firstname)
             .onSnapshot(snapshot => {
                 let expGroups = [];
                 snapshot.forEach(doc => {

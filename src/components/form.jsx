@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, DatePicker, Cascader } from "antd";
+import moment from "moment";
 
 const category = [
     {
@@ -149,7 +150,11 @@ class FormComponent extends Component {
                     validateStatus={dateError ? "error" : ""}
                     help={dateError || ""}
                 >
-                    {getFieldDecorator("date", config)(<DatePicker />)}
+                    {getFieldDecorator(
+                        "date",
+                        { initialValue: moment(new Date(), "DD-MM-YY") },
+                        config
+                    )(<DatePicker />)}
                 </Form.Item>
 
                 <Form.Item
