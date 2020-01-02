@@ -32,8 +32,6 @@ const ExpenseTable = props => {
     loadingRef.current = loading;
 
     useEffect(() => {
-        console.log(gid);
-
         setLoadingTrue();
         const unsubscribe = firebase.getExpenseByGroup(gid).onSnapshot(
             snapshot => {
@@ -92,25 +90,24 @@ const ExpenseTable = props => {
     const columns = Columns(filteredInfo, sortedInfo, handleDelete);
 
     return (
-        // <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">
-        //     <Col span={24}>
-        //         <StatisticComponent data={expenses} />
-        //     </Col>
-        //     <Col>
-        //         <WrappedFormComponent onDataAdd={handleAddData} />
-        //     </Col>
-        //     <Col span={24}>
-
-        //     </Col>
-        // </Row>
-        <Table
-            loading={loading}
-            columns={columns}
-            dataSource={expenses}
-            onChange={handleChange}
-            scroll={{ x: 1000, y: 450 }}
-            size="middle"
-        />
+        <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">
+            <Col span={24}>
+                <StatisticComponent data={expenses} />
+            </Col>
+            <Col>
+                <WrappedFormComponent onDataAdd={handleAddData} />
+            </Col>
+            <Col span={24}>
+                <Table
+                    loading={loading}
+                    columns={columns}
+                    dataSource={expenses}
+                    onChange={handleChange}
+                    scroll={{ x: 1000, y: 450 }}
+                    size="middle"
+                />
+            </Col>
+        </Row>
     );
 };
 

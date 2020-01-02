@@ -1,16 +1,22 @@
 import React, { Component } from "react";
-import Title from "./Title";
-import Description from "./Descriptions";
-import ExpGropuList from "./ExpGroupList";
-import AddGropuModal from "./AddGroupModal/AddGroupModal";
-import { SignInForm } from "../SignIn/signInPage";
 import { connect } from "react-redux";
+
 import { withFirebase } from "./../Firebase/context";
-import ExpenseTable from "../ExpenseTable/expenseTable";
+
+import AddGropuModal from "./AddGroupModal/AddGroupModal";
+import ExpenseTable from "./expenseTable";
+import { SignInForm } from "../SignIn/signInPage";
+import ExpGropuList from "./ExpGroupList";
+import Description from "./Descriptions";
+import Title from "./Title";
+
 import {
     setExpGrId,
     setShowingTableTrue,
-    setShowingTableFalse
+    setShowingTableFalse,
+    setExpenses,
+    setLoadingTrue,
+    setLoadingFalse
 } from "../../redux";
 
 class DashBoardBase extends Component {
@@ -37,28 +43,27 @@ class DashBoardBase extends Component {
                         handleNewGroup={this.handleNewGroup}
                     />
                 ]}
-                content={<ExpGropuList onGrSelect={this.handleGrSelect} />}
+                content={<ExpGropuList onGrSelect={this.onGrSelect} />}
             />
             {this.props.showingTable ? (
                 <Title
                     title="Expense Details"
-                    buttons={[
-                        <AddGropuModal
-                            key="Group"
-                            handleNewGroup={this.handleNewGroup}
-                        />
-                    ]}
-                    content={<ExpenseTable gid={this.props.expGrId} />}
+                    buttons={[]}
+                    content={<ExpenseTable />}
                 />
-            ) : (
-                ""
-            )}
+            ) : null}
         </div>
     );
 
-    handleGrSelect = gid => {
-        this.props.setExpGrId(gid);
-        this.props.setShowingTableTrue();
+    onGrSelect = gid => {
+        if (gid === this.props.expGrId) {
+            this.props.setShowingTableFalse();
+            this.props.setExpGrId(null);
+        } else {
+            this.props.setExpGrId(gid);
+
+            if (!this.props.showingTable) this.props.setShowingTableTrue();
+        }
     };
 
     handleNewGroup = values => {
@@ -66,7 +71,7 @@ class DashBoardBase extends Component {
         this.props.firebase
             .addExpGroup(values)
             .then(docRef => {
-                console.log("exp gr created with id ", docRef.id);
+                console.log("Group created with id ", docRef.id);
             })
             .catch(error => {
                 console.log("opps error", error.message);
@@ -92,7 +97,10 @@ const mapDispatchToProps = dispatch => {
     return {
         setExpGrId: gid => dispatch(setExpGrId(gid)),
         setShowingTableTrue: () => dispatch(setShowingTableTrue()),
-        setShowingTableFalse: () => dispatch(setShowingTableFalse())
+        setShowingTableFalse: () => dispatch(setShowingTableFalse()),
+        setExpenses: () => dispatch(setExpenses()),
+        setLoadingTrue: () => dispatch(setLoadingTrue()),
+        setLoadingFalse: () => dispatch(setLoadingFalse())
     };
 };
 

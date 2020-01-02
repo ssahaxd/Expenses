@@ -1,7 +1,7 @@
 import {
     SET_EXPENSES,
-    SET_LODING_TRUE,
-    SET_LODING_FALSE,
+    SET_EXP_TABLE_LODING_TRUE,
+    SET_EXP_TABLE_LODING_FALSE,
     SET_SORTED_INFO,
     SET_FILTERED_INFO,
     SET_SHOWING_TABLE_FALSE,
@@ -25,12 +25,12 @@ const expenseTableReducer = (state = initialState, action) => {
                 ...state,
                 expenses: [...action.payload]
             };
-        case SET_LODING_TRUE:
+        case SET_EXP_TABLE_LODING_TRUE:
             return {
                 ...state,
                 loading: true
             };
-        case SET_LODING_FALSE:
+        case SET_EXP_TABLE_LODING_FALSE:
             return {
                 ...state,
                 loading: false

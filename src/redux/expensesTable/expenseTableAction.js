@@ -1,7 +1,7 @@
 import {
     SET_EXPENSES,
-    SET_LODING_TRUE,
-    SET_LODING_FALSE,
+    SET_EXP_TABLE_LODING_TRUE,
+    SET_EXP_TABLE_LODING_FALSE,
     SET_SORTED_INFO,
     SET_FILTERED_INFO,
     SET_SHOWING_TABLE_FALSE,
@@ -32,13 +32,13 @@ export const setExpenses = expenses => {
 
 export const setLoadingTrue = () => {
     return {
-        type: SET_LODING_TRUE
+        type: SET_EXP_TABLE_LODING_TRUE
     };
 };
 
 export const setLoadingFalse = () => {
     return {
-        type: SET_LODING_FALSE
+        type: SET_EXP_TABLE_LODING_FALSE
     };
 };
 
