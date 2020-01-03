@@ -20,11 +20,12 @@ import {
     setExpenses,
     setLoadingTrue,
     setLoadingFalse,
-    resetUid
+    resetUid,
+    setShowingSignUpTrue,
+    setShowingSignUpFalse
 } from "../../redux";
 
 class DashBoardBase extends Component {
-    signUp = true;
     _updateExpense = expenseData => {
         this.props.firebase
             .addExpense(expenseData)
@@ -52,18 +53,33 @@ class DashBoardBase extends Component {
         this.props.resetUid();
     };
     _onSignUp = () => {
-        this.setState({ signUp: !this.state.signUp });
+        this.props.setShowingSignUpTrue();
+    };
+    _onSignIn = () => {
+        this.props.setShowingSignUpFalse();
     };
 
     showLogin = () => (
         <Title
             title="Hi, There Please Login"
             buttons={[
-                <Button key="Signup" type="button" onClick={this._onSignUp}>
+                <Button key="SignUp" type="button" onClick={this._onSignUp}>
                     Sign Up
                 </Button>
             ]}
-            content={this.signUp ? <SignUpForm /> : <SignInForm />}
+            content={<SignInForm />}
+        />
+    );
+
+    showSignUp = () => (
+        <Title
+            title="Sign up"
+            buttons={[
+                <Button key="SignIn" type="button" onClick={this._onSignIn}>
+                    Sign In
+                </Button>
+            ]}
+            content={<SignUpForm />}
         />
     );
 
@@ -93,17 +109,19 @@ class DashBoardBase extends Component {
                 content={<ExpGropuList onGrSelect={this.onGrSelect} />}
             />
             {this.props.showingTable ? (
-                <Title
-                    title="Expense Details"
-                    buttons={[
-                        <AddExpenseModal
-                            key="Expense"
-                            handleNewExpense={this.handleNewExpense}
-                            users={this._getExpGrUsers(this.props.expGrId)}
-                        />
-                    ]}
-                    content={<ExpenseTable />}
-                />
+                <div id={this.props.expGrId}>
+                    <Title
+                        title="Expense Details"
+                        buttons={[
+                            <AddExpenseModal
+                                key="Expense"
+                                handleNewExpense={this.handleNewExpense}
+                                users={this._getExpGrUsers(this.props.expGrId)}
+                            />
+                        ]}
+                        content={<ExpenseTable />}
+                    />
+                </div>
             ) : null}
         </div>
     );
@@ -147,12 +165,21 @@ class DashBoardBase extends Component {
 
     render() {
         const { uid, userInfo } = this.props;
-        return <div>{uid ? this.showDetails(userInfo) : this.showLogin()}</div>;
+        return (
+            <div>
+                {uid
+                    ? this.showDetails(userInfo)
+                    : this.props.showSignup
+                    ? this.showSignUp()
+                    : this.showLogin()}
+            </div>
+        );
     }
 }
 
 const mapStateToProps = state => {
     return {
+        showSignup: state.user.showSignup,
         uid: state.user.uid,
         userInfo: state.user.userInfo,
         showingTable: state.expensesTable.showingTable,
@@ -169,7 +196,9 @@ const mapDispatchToProps = dispatch => {
         setExpenses: () => dispatch(setExpenses()),
         setLoadingTrue: () => dispatch(setLoadingTrue()),
         setLoadingFalse: () => dispatch(setLoadingFalse()),
-        resetUid: () => dispatch(resetUid())
+        resetUid: () => dispatch(resetUid()),
+        setShowingSignUpTrue: () => dispatch(setShowingSignUpTrue()),
+        setShowingSignUpFalse: () => dispatch(setShowingSignUpFalse())
     };
 };
 

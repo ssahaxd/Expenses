@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Row, Col, Typography } from "antd";
-import { Link, withRouter } from "react-router-dom";
 import { setUser } from "../../redux";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import { compose } from "recompose";
-import * as ROUTES from "../../constants/routes";
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 class NormalLoginForm extends Component {
     handleSubmit = e => {
@@ -99,10 +97,6 @@ class NormalLoginForm extends Component {
                     >
                         Log in
                     </Button>
-                    <br />
-                    <Text type="secondary">
-                        Or <Link to={ROUTES.SIGN_UP}>register now!</Link>
-                    </Text>
                 </Form.Item>
             </Form>
         );
@@ -125,7 +119,7 @@ const mapDispatchToProps = dispatch => {
 export const SignInForm = connect(
     mapStateToProps,
     mapDispatchToProps
-)(compose(withRouter, withFirebase, Form.create())(NormalLoginForm));
+)(compose(withFirebase, Form.create())(NormalLoginForm));
 
 const SignInPage = () => (
     <Row gutter={[0, 20]} type="flex" justify="space-around" align="middle">

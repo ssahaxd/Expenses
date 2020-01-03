@@ -55,7 +55,7 @@ class ExpGroupList extends Component {
                             }
                             title={
                                 <a
-                                    href="# "
+                                    href={`#${item.key}`}
                                     onClick={() =>
                                         this.props.onGrSelect(item.key)
                                     }

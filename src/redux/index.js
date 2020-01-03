@@ -9,7 +9,12 @@ export {
     setShowingTableFalse
 } from "./expensesTable/expenseTableAction";
 
-export { setUser, resetUid } from "./user/userAction";
+export {
+    setUser,
+    resetUid,
+    setShowingSignUpTrue,
+    setShowingSignUpFalse
+} from "./user/userAction";
 
 export {
     setGrLoadingFalse,

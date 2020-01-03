@@ -1,10 +1,13 @@
 import {
     RESET_USER_ID,
     SET_USER,
-    UPDATE_USER_EXP_GROUPS
+    UPDATE_USER_EXP_GROUPS,
+    SHOW_SIGNUP_TRUE,
+    SHOW_SIGNUP_FALSE
 } from "./userActionType";
 
 const initialState = JSON.parse(localStorage.getItem("user")) || {
+    showSignup: true,
     uid: null,
     userInfo: {
         email: "",
@@ -33,6 +36,16 @@ const useReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userExpGropus: { ...action.payload }
+            };
+        case SHOW_SIGNUP_TRUE:
+            return {
+                ...state,
+                showSignup: true
+            };
+        case SHOW_SIGNUP_FALSE:
+            return {
+                ...state,
+                showSignup: false
             };
         default:
             return state;
