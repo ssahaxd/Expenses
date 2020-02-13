@@ -11,6 +11,9 @@ const Navigation = () => {
                 <Menu.Item key={ROUTER.DASHBOARD}>
                     <Link to={ROUTER.DASHBOARD}>Dashboard</Link>
                 </Menu.Item>
+                {/* <Menu.Item key={ROUTER.GROUP}>
+                    <Link to={ROUTER.GROUP}>Group</Link>
+                </Menu.Item> */}
             </Menu>
         </Layout.Header>
     );

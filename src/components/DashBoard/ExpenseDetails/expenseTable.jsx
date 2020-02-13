@@ -5,13 +5,23 @@ import {
     setLoadingFalse,
     setSortedInfo,
     setFilteredInfo
-} from "../../redux";
+} from "../../../redux";
 import { connect } from "react-redux";
-import { withFirebase } from "../Firebase/context";
+import { withFirebase } from "../../Firebase/context";
 import { Table } from "antd";
-import { Columns } from "../../constants/columns";
+import { Columns } from "../../../constants/columns";
+import StatisticComponent from "./Statistics/statisticComponent";
 
 export class ExpenseTable extends Component {
+    _getExpGrUsers = gid => {
+        const users = this.props.expGropus.filter(g => {
+            return g.key === gid;
+        })[0].users;
+        return users;
+    };
+
+    users = this._getExpGrUsers(this.props.gid);
+
     _fetchAndSaveData = () => {
         this.props.setLoadingTrue();
         const unsubscribe = this.props.firebase
@@ -55,18 +65,27 @@ export class ExpenseTable extends Component {
 
     render() {
         let { expenses, loading, sortedInfo, filteredInfo } = this.props;
+
         sortedInfo = sortedInfo || {};
         filteredInfo = filteredInfo || {};
-        const columns = Columns(filteredInfo, sortedInfo, this.handleDelete);
+        const columns = Columns(
+            filteredInfo,
+            sortedInfo,
+            this.handleDelete,
+            this.users
+        );
         return (
-            <Table
-                loading={loading}
-                columns={columns}
-                dataSource={expenses}
-                onChange={this.handleChange}
-                scroll={{ x: 1000, y: 450 }}
-                size="middle"
-            />
+            <div>
+                <StatisticComponent data={expenses} users={this.users} />
+                <Table
+                    loading={loading}
+                    columns={columns}
+                    dataSource={expenses}
+                    onChange={this.handleChange}
+                    scroll={{ x: 1000, y: 450 }}
+                    size="middle"
+                />
+            </div>
         );
     }
 }
@@ -77,7 +96,8 @@ const mapStateToProps = state => {
         loading: state.expensesTable.loading,
         expenses: state.expensesTable.expenses,
         filteredInfo: state.expensesTable.filteredInfo,
-        sortedInfo: state.expensesTable.sortedInfo
+        sortedInfo: state.expensesTable.sortedInfo,
+        expGropus: state.expGroup.userExpGropus
     };
 };
 

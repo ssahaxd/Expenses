@@ -46,8 +46,40 @@ class Firebase {
     addExpense = expense => this.db.collection("expenses").add(expense);
     deleteExpense = key => this.db.doc(`expenses/${key}`).delete();
 
+    deleteGroup = key => {
+        this.db
+            .collection("expenses")
+            .where("gid", "==", key)
+            .get()
+            .then(querySnapshot => {
+                let batch = this.db.batch();
+                querySnapshot.forEach(function(doc) {
+                    batch.delete(doc.ref);
+                });
+                return batch.commit();
+            })
+            .then(console.log("Deleted group expenses with id", key))
+            .catch(error => {
+                console.log(
+                    "Error While deleting all Records for the Group",
+                    error
+                );
+            });
+
+        this.db
+            .doc(`expense-group/${key}`)
+            .delete()
+            .then(console.log("Deleted group with id", key))
+            .catch(error => {
+                console.log("Error While deleting the Group", error);
+            });
+    };
+
     getExpenseByGroup = gid =>
-        this.db.collection("expenses").where("gid", "==", gid);
+        this.db
+            .collection("expenses")
+            .where("gid", "==", gid)
+            .orderBy("date", "desc");
 
     getUserByUserName = username =>
         this.db

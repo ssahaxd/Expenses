@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, Form, Input, Select } from "antd";
+import { Button, Modal, Form, Input, Select, Tag } from "antd";
 
 const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
     class extends Component {
@@ -37,6 +37,11 @@ const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
                                     mode="tags"
                                     dropdownStyle={{ display: "none" }}
                                 ></Select>
+                            )}
+                        </Form.Item>
+                        <Form.Item label="Unique Group ID (for sharing)">
+                            {getFieldDecorator("u-gid")(
+                                <Input type="textarea" maxLength={8} />
                             )}
                         </Form.Item>
                     </Form>
@@ -80,9 +85,16 @@ class AddGropuModal extends Component {
     render() {
         return (
             <div>
-                <Button type="primary" onClick={this.showModal}>
-                    New Group
-                </Button>
+                {this.props.type === "tag" ? (
+                    <Tag color="volcano" onClick={this.showModal}>
+                        <a href="# ">{this.props.name}</a>
+                    </Tag>
+                ) : (
+                    <Button type="primary" onClick={this.showModal}>
+                        {this.props.name}
+                    </Button>
+                )}
+
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

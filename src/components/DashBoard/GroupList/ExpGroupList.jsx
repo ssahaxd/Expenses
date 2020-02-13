@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import { List, Avatar, Icon } from "antd";
+import { List, Avatar, Tag, Popconfirm } from "antd";
 import { connect } from "react-redux";
-import { withFirebase } from "./../Firebase/context";
+import { withFirebase } from "../../Firebase/context";
 import {
     setUserExpGroup,
     setGrLoadingFalse,
     setGrLoadingTrue
-} from "../../redux";
+} from "../../../redux";
+import AddGropuModal from "./AddGroupModal/AddGroupModal";
 
 class ExpGroupList extends Component {
+    handleDelete = key => {
+        this.props.firebase.deleteGroup(key);
+    };
     componentDidMount() {
         this.props.setGrLoadingTrue();
         this.unsubscribe = this.props.firebase
@@ -37,9 +41,20 @@ class ExpGroupList extends Component {
                 renderItem={item => (
                     <List.Item
                         actions={[
-                            <a key={item.key} href="# ">
-                                <Icon type="edit" />
-                            </a>
+                            <Popconfirm
+                                title="Sure to delete?"
+                                onConfirm={() => this.handleDelete(item.key)}
+                            >
+                                <Tag color="volcano">
+                                    <a href="# ">Delete</a>
+                                </Tag>
+                            </Popconfirm>,
+                            <AddGropuModal
+                                key="edit"
+                                handleNewGroup={this.handleNewGroup}
+                                name="Edit Group"
+                                type="tag"
+                            />
                         ]}
                     >
                         <List.Item.Meta
@@ -54,14 +69,14 @@ class ExpGroupList extends Component {
                                 </Avatar>
                             }
                             title={
-                                <a
-                                    href={`#${item.key}`}
+                                <span
+                                    className="link"
                                     onClick={() =>
                                         this.props.onGrSelect(item.key)
                                     }
                                 >
                                     {item.gname}
-                                </a>
+                                </span>
                             }
                             description={
                                 <div>

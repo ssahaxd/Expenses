@@ -1,13 +1,9 @@
 import React from "react";
 import { Tag, Avatar, Popconfirm } from "antd";
 import { titleCase } from "voca";
+import moment from "moment";
 
-export function Columns(
-    filteredInfo,
-    sortedInfo,
-    handleDelete,
-    tableUsers = ["Sandip", "Soutrick", "Subham", "Sanchayan"]
-) {
+export function Columns(filteredInfo, sortedInfo, handleDelete, tableUsers) {
     return [
         {
             title: "Name",
@@ -80,7 +76,7 @@ export function Columns(
             title: "Date",
             dataIndex: "date",
             key: "date",
-            sorter: (a, b) => new Date(a.date) - new Date(b.date),
+            sorter: (a, b) => moment(a).unix() - moment(b).unix(),
             sortOrder: sortedInfo.columnKey === "date" && sortedInfo.order
         },
         {
@@ -89,11 +85,6 @@ export function Columns(
 
             render: record => (
                 <span>
-                    {/* <Tag color="green">
-                        <a href="# ">Edit</a>
-                    </Tag>
-
-                    <Divider type="vertical" /> */}
                     <Popconfirm
                         title="Sure to delete?"
                         onConfirm={() => handleDelete(record.key)}

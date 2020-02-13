@@ -15,3 +15,8 @@ code {
 .mt-50 {
     margin-top: 50px;
 }
+
+.link {
+    cursor: pointer;
+    color: #1890ff;
+}
