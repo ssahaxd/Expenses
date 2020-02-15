@@ -5,6 +5,7 @@ import AddGropuModal from "./AddGroupModal/AddGroupModal";
 import { connect } from "react-redux";
 import { withFirebase } from "../../Firebase/context";
 import { withRouter } from "react-router-dom";
+import cogoToast from "cogo-toast";
 
 import {
     setExpGrId,
@@ -46,6 +47,7 @@ class GroupList extends Component {
             .addExpGroup(values)
             .then(docRef => {
                 console.log("Group created with id ", docRef.id);
+                cogoToast.success("Success!");
             })
             .catch(error => {
                 console.log("opps error", error.message);

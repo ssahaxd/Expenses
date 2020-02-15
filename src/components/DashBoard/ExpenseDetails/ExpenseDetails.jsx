@@ -6,6 +6,7 @@ import { withFirebase } from "../../Firebase/context";
 import { withRouter } from "react-router-dom";
 import AddExpenseModal from "./AddExpenseModal/AddExpenseModal";
 import ExpenseTable from "./expenseTable";
+import cogoToast from "cogo-toast";
 
 import {
     setExpGrId,
@@ -32,12 +33,11 @@ class ExpenseDetails extends Component {
             .addExpense(expenseData)
             .then(docRef => {
                 console.log("Expense group created with ID: ", docRef.id);
+                cogoToast.success("Expense added");
             })
             .catch(error => {
-                console.log(
-                    "error while creating expense group data",
-                    error.message
-                );
+                console.log("error while creating expense", error.message);
+                cogoToast.error("Something went wrong!");
             });
     };
 
