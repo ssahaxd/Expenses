@@ -15,7 +15,11 @@ const StatisticComponent = props => {
     };
     let users = _getExpGrUsers(props.gid);
 
-    if (filteredInfo !== null && filteredInfo.name.length !== 0) {
+    if (
+        filteredInfo !== null &&
+        filteredInfo.name &&
+        filteredInfo.name.length !== 0
+    ) {
         expenses = expenses.filter(exp => filteredInfo.name.includes(exp.name));
         users = filteredInfo.name;
     }

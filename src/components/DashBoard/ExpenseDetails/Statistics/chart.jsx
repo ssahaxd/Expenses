@@ -27,9 +27,9 @@ const MyResponsivePie = ({ expenses }) => {
             radialLabelsSkipAngle={10}
             radialLabelsTextXOffset={6}
             radialLabelsTextColor="#333333"
-            radialLabelsLinkOffset={-24}
+            radialLabelsLinkOffset={-10}
             radialLabelsLinkDiagonalLength={16}
-            radialLabelsLinkHorizontalLength={24}
+            radialLabelsLinkHorizontalLength={10}
             radialLabelsLinkStrokeWidth={1}
             radialLabelsLinkColor={{ from: "color" }}
             slicesLabelsSkipAngle={10}

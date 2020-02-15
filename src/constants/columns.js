@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag, Avatar, Popconfirm } from "antd";
+import { Tag, Avatar, Popconfirm, Icon, Tooltip } from "antd";
 import { titleCase } from "voca";
 import moment from "moment";
 
@@ -39,7 +39,7 @@ export function Columns(filteredInfo, sortedInfo, handleDelete, tableUsers) {
 
             filteredValue: filteredInfo.name || null,
             onFilter: (value, record) => record.name.includes(value),
-            sorter: (a, b) => a.name.length - b.name.length,
+            sorter: (a, b) => a.name.localeCompare(b.name),
             sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
             ellipsis: true
         },
@@ -89,9 +89,13 @@ export function Columns(filteredInfo, sortedInfo, handleDelete, tableUsers) {
                         title="Sure to delete?"
                         onConfirm={() => handleDelete(record.key)}
                     >
-                        <Tag color="volcano">
-                            <a href="# ">Remove</a>
-                        </Tag>
+                        <Tooltip title="Delete">
+                            <Icon
+                                type="close-circle"
+                                theme="filled"
+                                style={{ fontSize: "1.3rem" }}
+                            />
+                        </Tooltip>
                     </Popconfirm>
                 </span>
             )

@@ -4,6 +4,8 @@ import { setUser } from "../../redux";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import { compose } from "recompose";
+import cogoToast from "cogo-toast";
+
 const { Title } = Typography;
 
 class NormalLoginForm extends Component {
@@ -21,7 +23,7 @@ class NormalLoginForm extends Component {
                                     uid: user.uid,
                                     userInfo: snapshot.data()
                                 };
-
+                                cogoToast.success("Logged in :)");
                                 this.props.setUser({ ...userdata });
                                 localStorage.setItem(
                                     "user",
@@ -33,12 +35,15 @@ class NormalLoginForm extends Component {
                                     "Error Fetcing profile data",
                                     error.message
                                 );
+                                cogoToast.error(error.message);
                             }
                         );
                         // this.props.history.push(ROUTES.HOME);
                     })
                     .catch(error => {
                         console.log("Opps Error code", error.message);
+
+                        cogoToast.error(error.message);
                     });
             }
         });

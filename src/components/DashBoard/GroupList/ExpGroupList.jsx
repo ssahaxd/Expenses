@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Avatar, Tag, Popconfirm } from "antd";
+import { List, Avatar, Icon, Popconfirm, Tooltip } from "antd";
 import { connect } from "react-redux";
 import { withFirebase } from "../../Firebase/context";
 
@@ -46,15 +46,19 @@ class ExpGroupList extends Component {
                                 title="Sure to delete?"
                                 onConfirm={() => this.handleDelete(item.key)}
                             >
-                                <Tag color="volcano">
-                                    <a href="# ">Delete</a>
-                                </Tag>
+                                <Tooltip title="Delete">
+                                    <Icon
+                                        type="close-circle"
+                                        theme="filled"
+                                        style={{ fontSize: "1.3rem" }}
+                                    />
+                                </Tooltip>
                             </Popconfirm>,
                             <AddGropuModal
                                 key="edit"
                                 handleNewGroup={this.handleNewGroup}
                                 name="Edit Group"
-                                type="tag"
+                                type="icon"
                             />
                         ]}
                     >

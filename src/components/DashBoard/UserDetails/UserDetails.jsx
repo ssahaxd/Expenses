@@ -44,12 +44,6 @@ class UserDetails extends Component {
         localStorage.clear();
         this.props.resetUid();
     };
-    _onSignUp = () => {
-        this.props.setShowingSignUpTrue();
-    };
-    _onSignIn = () => {
-        this.props.setShowingSignUpFalse();
-    };
 
     render() {
         const { userInfo } = this.props;

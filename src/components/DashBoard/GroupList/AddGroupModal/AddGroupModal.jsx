@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, Form, Input, Select, Tag } from "antd";
+import { Button, Modal, Form, Input, Select, Icon, Tooltip } from "antd";
 
 const CollectionCreateForm = Form.create({ name: "form_in_modal" })(
     class extends Component {
@@ -85,10 +85,15 @@ class AddGropuModal extends Component {
     render() {
         return (
             <div>
-                {this.props.type === "tag" ? (
-                    <Tag color="volcano" onClick={this.showModal}>
-                        <a href="# ">{this.props.name}</a>
-                    </Tag>
+                {this.props.type === "icon" ? (
+                    <Tooltip title="Edit (DISABLED)">
+                        <Icon
+                            type="edit"
+                            theme="filled"
+                            // onClick={this.showModal}
+                            style={{ fontSize: "1.3rem" }}
+                        />
+                    </Tooltip>
                 ) : (
                     <Button type="primary" onClick={this.showModal}>
                         {this.props.name}

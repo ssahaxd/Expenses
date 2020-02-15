@@ -3,6 +3,7 @@ import { setUser } from "../../redux";
 import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import { compose } from "recompose";
+import cogoToast from "cogo-toast";
 import { Form, Input, Row, Col, Button, Typography } from "antd";
 
 const { Title } = Typography;
@@ -13,6 +14,7 @@ class RegistrationForm extends Component {
     };
 
     handleSubmit = e => {
+        cogoToast.loading("Please wait..");
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
@@ -25,10 +27,10 @@ class RegistrationForm extends Component {
                 } = values;
 
                 const userInfo = {
-                    firstname,
-                    lastname,
-                    username,
-                    email
+                    firstname: firstname.trim(),
+                    lastname: lastname.trim(),
+                    username: username.trim(),
+                    email: email.trim()
                 };
 
                 this.props.firebase
@@ -36,7 +38,7 @@ class RegistrationForm extends Component {
                     .then(querySnapshot => {
                         if (querySnapshot.empty) {
                             console.log("Username Available");
-
+                            cogoToast.success("Username Available");
                             this.props.firebase
                                 .doCreateUserWithEmailAndPassword(
                                     email,
@@ -49,6 +51,9 @@ class RegistrationForm extends Component {
                                             console.log(
                                                 `User ${firstname} Created with uid = ${user.uid}`
                                             );
+                                            cogoToast.success(
+                                                "User Created :)"
+                                            );
                                             this.props.setUser({
                                                 uid: user.uid,
                                                 userInfo
@@ -59,6 +64,7 @@ class RegistrationForm extends Component {
                                                 "Error storing user data",
                                                 error.message
                                             );
+                                            cogoToast.error(error.message);
                                         });
                                 })
                                 .catch(error => {
@@ -66,9 +72,11 @@ class RegistrationForm extends Component {
                                         "error creatin user",
                                         error.message
                                     );
+                                    cogoToast.error(error.message);
                                 });
                         } else {
                             console.log("Usernmae not availabe");
+                            cogoToast.error("Usernmae not availabe");
                         }
                     });
             }
@@ -128,7 +136,8 @@ class RegistrationForm extends Component {
                         rules: [
                             {
                                 required: true,
-                                message: "Please create a unique username!"
+                                message: "Please create a unique username!",
+                                whitespace: false
                             }
                         ]
                     })(<Input placeholder="User Name" />)}
