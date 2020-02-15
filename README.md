@@ -9,4 +9,5 @@ Live Demo [here](https://expenses-ssaha.firebaseapp.com/)
 1. architect the project little better
 2. improve the ui
 
+# Screenshot
 ![](https://i.snipboard.io/PAtDuX.jpg)
