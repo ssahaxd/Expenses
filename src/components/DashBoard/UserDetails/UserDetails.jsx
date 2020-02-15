@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import { withFirebase } from "../../Firebase/context";
-
-import { SignInForm } from "../../SignIn/signInPage";
-import { SignUpForm } from "../../SignUp/signUpPage";
-
 import Description from "../Descriptions";
 import Title from "../Title";
 import { Button } from "antd";
@@ -55,30 +50,6 @@ class UserDetails extends Component {
     _onSignIn = () => {
         this.props.setShowingSignUpFalse();
     };
-
-    showLogin = () => (
-        <Title
-            title="Hi, There Please Login"
-            buttons={[
-                <Button key="SignUp" type="button" onClick={this._onSignUp}>
-                    Sign Up
-                </Button>
-            ]}
-            content={<SignInForm />}
-        />
-    );
-
-    showSignUp = () => (
-        <Title
-            title="Sign up"
-            buttons={[
-                <Button key="SignIn" type="button" onClick={this._onSignIn}>
-                    Sign In
-                </Button>
-            ]}
-            content={<SignUpForm />}
-        />
-    );
 
     render() {
         const { userInfo } = this.props;

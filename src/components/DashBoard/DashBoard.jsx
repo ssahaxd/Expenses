@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import { withFirebase } from "./../Firebase/context";
 import GroupList from "./GroupList/GroupList";
 import UserDetails from "./UserDetails/UserDetails";
+import { SignInForm } from "../SignIn/signInPage";
+import { SignUpForm } from "../SignUp/signUpPage";
+import { Button } from "antd";
+import Title from "./Title";
 
 import {
     setExpGrId,
@@ -23,6 +27,36 @@ class DashBoardBase extends Component {
             <GroupList />
         </div>
     );
+    showLogin = () => (
+        <Title
+            title="Hi, There Please Login"
+            buttons={[
+                <Button key="SignUp" type="button" onClick={this._onSignUp}>
+                    Sign Up
+                </Button>
+            ]}
+            content={<SignInForm />}
+        />
+    );
+
+    showSignUp = () => (
+        <Title
+            title="Sign up"
+            buttons={[
+                <Button key="SignIn" type="button" onClick={this._onSignIn}>
+                    Sign In
+                </Button>
+            ]}
+            content={<SignUpForm />}
+        />
+    );
+
+    _onSignUp = () => {
+        this.props.setShowingSignUpTrue();
+    };
+    _onSignIn = () => {
+        this.props.setShowingSignUpFalse();
+    };
 
     render() {
         const { uid } = this.props;
